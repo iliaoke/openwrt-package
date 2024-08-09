@@ -1,0 +1,29 @@
+name: Patch Workflow
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set up 
+      run: |
+       sudo bash -c 'bash <(curl -s https://build-scripts.immortalwrt.org/init_build_environment.sh)'
+       #sudo apt-get -qq update
+       #sudo apt-get -qq install build-essential libncurses5-dev libncursesw5-dev zlib1g-dev gawk git gettext libssl-dev xsltproc rsync wget unzip qemu-utils mkisofs
+       sudo apt install tar zstd
+       wget https://downloads.immortalwrt.org/snapshots/targets/rockchip/armv8/immortalwrt-sdk-rockchip-armv8_gcc-13.3.0_musl.Linux-x86_64.tar.zst
+       tar -I zstd -xvf immortalwrt-sdk-rockchip-armv8_gcc-13.3.0_musl.Linux-x86_64.tar.zst
+       cd immortalwrt-sdk-rockchip-armv8_gcc-13.3.0_musl.Linux-x86_64
+       echo "src-git 1 https://github.com/morytyann/OpenWrt-mihomo.git;main" >> "feeds.conf.default"
+       ./scripts/feeds update -a
+       ./scripts/feeds install -a
+       # make package
+       make package/luci-app-mihomo/compile
+       
+    - name: Upload artifact
+      uses: actions/upload-artifact@main
+      with:
+        path: immortalwrt-sdk-rockchip-armv8_gcc-13.3.0_musl.Linux-x86_64/bin/packages/aarch64_generic/1
