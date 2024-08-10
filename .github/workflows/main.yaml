@@ -5,30 +5,34 @@ on:
 
 jobs:
   build:
-    name: ${{ matrix.arch }}-${{ matrix.release }} build
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        arch:
-          - aarch64_generic
-        release:
-          - openwrt-23.05
-
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@main
         with:
           fetch-depth: 0
-          
-      - name: Build
-        uses: liaoke01/gh-action-sdk@main
-        env:
-          ARCH: ${{ matrix.arch }}-${{ matrix.release }}
-          FEEDNAME: 1
-          PACKAGES: luci-app-mihomo luci-app-homeproxy luci-app-daed
-          NO_REFRESH_CHECK: true
-          INDEX: 1
+
+      - name: Set up 
+        run: |
+         #sudo apt-get -qq update
+         #sudo apt-get -qq install build-essential libncurses5-dev libncursesw5-dev zlib1g-dev gawk git gettext libssl-dev xsltproc rsync wget unzip qemu-utils mkisofs
+         sudo bash -c 'bash <(curl -s https://build-scripts.immortalwrt.org/init_build_environment.sh)'
+         sudo apt install tar zstd xz
+         wget https://mirror-03.infra.openwrt.org/releases/23.05.4/targets/rockchip/armv8/openwrt-sdk-23.05.4-rockchip-armv8_gcc-12.3.0_musl.Linux-x86_64.tar.xz
+         tar xvJf openwrt-sdk-23.05.4-rockchip-armv8_gcc-12.3.0_musl.Linux-x86_64.tar.xz
+         cd openwrt-sdk-23.05.4-rockchip-armv8_gcc-12.3.0_musl.Linux-x86_64
+         echo "src-git 1 https://github.com/liaoke01/openwrt-package.git;main" >> "feeds.conf.default"
+         ./scripts/feeds update -a
+         ./scripts/feeds install -a
+         make defconfig | true
+         make package/luci-app-mihomo/compile
+         ls bin/packages/rockchip/armv8
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@main
+        with:
+         path: immortalwrt-imagebuilder-rockchip-armv8.Linux-x86_64/bin/targets/rockchip/armv8/immortalwrt-rockchip-armv8-friendlyarm_nanopi-r2s-ext4-sysupgrade.img.gz
+        
 
       - name: push
         run: |
