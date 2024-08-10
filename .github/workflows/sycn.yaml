@@ -16,8 +16,8 @@ jobs:
         git config --global user.name 'GitHub Actions'
         git config --global user.email 'actions@github.com'
         export files="luci-app-daed daed luci-app-mihomo mihomo"
-        export links="https://github.com/QiuSimons/luci-app-daed/archive/refs/heads/master.zip https://github.com/morytyann/OpenWrt-mihomo/archive/refs/heads/main.zip https://github.com/muink/luci-app-homeproxy/archive/refs/heads/master.zip https://github.com/muink/homeproxy/archive/refs/heads/dev/main.zip"
-        export names="luci-app-daed-master OpenWrt-mihomo-main homeproxy-dev/main "
+        export links="https://github.com/QiuSimons/luci-app-daed/archive/refs/heads/master.zip https://github.com/morytyann/OpenWrt-mihomo/archive/refs/heads/main.zip"
+       
         rm -rf $files
         git add -A
         git commit -m "delete"
@@ -30,7 +30,8 @@ jobs:
         done
         tree
         for file in $files; do
-          find . -type d -name $file -exec sh -c 'mv "$0" ./' {} \;
+          FOLDER_PATH=$(find . -type d -name "$file" -print)
+          mv $FOLDER_PATH .
         done
 
           
