@@ -31,6 +31,7 @@ jobs:
         tree
         for file in $files; do
           FOLDER_PATH=$(find . -type d -name "$file" -print)
+          echo "$FOLDER_PATH"
           mv $FOLDER_PATH .
         done
 
