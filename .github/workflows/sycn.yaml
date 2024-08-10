@@ -15,8 +15,7 @@ jobs:
       run: |
         git config --global user.name 'GitHub Actions'
         git config --global user.email 'actions@github.com'
-        shopt -s extglob
-        rm -rf !(.git|.github)/*
+        find . -mindepth 1 ! -name .git ! -name .github -exec rm -rf {} +
         git add -A
         git commit -m "delete"
         sudo apt update
