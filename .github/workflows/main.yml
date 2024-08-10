@@ -21,6 +21,7 @@ jobs:
        ./scripts/feeds update -a
        ./scripts/feeds install -a
        # make package
+       make deconfig
        make package/luci-app-mihomo/compile
        
     - name: Upload artifact
