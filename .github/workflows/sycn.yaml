@@ -1,0 +1,20 @@
+name: Patch Workflow
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+    - name: Checkout
+      uses: actions/checkout@main
+
+    - name: Set up 
+      run: |
+        sudo apt update
+        sudo apt install aria2 unzip tar zstd
+        aria2c -0 1.zip https://github.com/QiuSimons/luci-app-daed/archive/refs/heads/master.zip
+        unzip 1.zip /daed -d .
+        ls
