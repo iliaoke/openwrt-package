@@ -13,16 +13,17 @@ jobs:
 
     - name: Set up 
       run: |
-        ls
+        find . -mindepth 1 -maxdepth 1 ! -name '.git' ! -name '.github' ! -type d -exec rm -v {} +
         sudo apt update
         sudo apt install aria2 unzip tar zstd
         aria2c --out=1.zip  https://github.com/QiuSimons/luci-app-daed/archive/refs/heads/master.zip
         unzip 1.zip
         mv ./luci-app-daed-master/luci-app-daed .
+        find . -mindepth 1 -maxdepth 1 ! -name '.git' ! -name '.github' ! -name 'luci-app-daed' ! -type d -exec rm -v {} +
         git config --global user.name 'GitHub Actions'
         git config --global user.email 'actions@github.com'
-        git add luci-app-daed
-        git commit -m "Add directory"
+        git add -A
+        git commit -m "sycn"
         ls
 
     - name: Push changes
