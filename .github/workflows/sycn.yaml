@@ -13,6 +13,8 @@ jobs:
 
     - name: Set up 
       run: |
+        find . -mindepth 1 -maxdepth 1 -type d ! -name '.github' -exec rm -r {} +
+        git add -A
         sudo apt update
         sudo apt install aria2 unzip tar zstd
         aria2c --out=1.zip  https://github.com/QiuSimons/luci-app-daed/archive/refs/heads/master.zip
