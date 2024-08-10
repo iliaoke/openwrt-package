@@ -13,7 +13,7 @@ jobs:
         arch:
           - aarch64_generic
         release:
-          - SNAPSHOT
+          - openwrt-23.05
 
     steps:
       - name: Checkout
@@ -30,9 +30,6 @@ jobs:
           NO_REFRESH_CHECK: true
           INDEX: 1
 
-      - name: Start SSH via tmate
-        uses: rdp-studio/ssh2actions@main
-        
       - name: push
         run: |
           git config --global user.name 'GitHub Actions'
