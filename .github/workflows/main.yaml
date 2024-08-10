@@ -24,7 +24,9 @@ jobs:
          echo "src-git 1 https://github.com/liaoke01/openwrt-package.git;main" >> "feeds.conf.default"
          ./scripts/feeds update -a
          ./scripts/feeds install -a
-
+         rm .config
+         wget https://raw.githubusercontent.com/liaoke01/openwrt-package/main/.github/workflows/.config
+         make deconfig
 
       - name: build
         run: |
