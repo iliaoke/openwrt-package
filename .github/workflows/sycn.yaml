@@ -17,18 +17,34 @@ jobs:
         git config --global user.email 'actions@github.com'
         export files="luci-app-daed daed luci-app-mihomo mihomo"
         export links="https://github.com/QiuSimons/luci-app-daed/archive/refs/heads/master.zip https://github.com/morytyann/OpenWrt-mihomo/archive/refs/heads/main.zip"
-       
+        export single-links="https://github.com/muink/luci-app-homeproxy/archive/refs/heads/master.zip https://github.com/muink/homeproxy/archive/refs/heads/dev/main.zip"
+        
         rm -rf $files
         git add -A
         git commit -m "delete"
         sudo apt update
         sudo apt install aria2 unzip tree
+        
+        for single-link in $single-links; do
+          aria2c --out=1.zip  $single-link
+          unzip 1.zip
+          rm 1.zip
+          package=$(echo "$single-link" | sed -n '/^[^/]*/{s//\//;s/.*\///;p;q}')
+          echo "$package"
+          mv $package-main $package || true
+          mv $package-master $package || true
+          mv $package-dev/main $package || true
+          
+        done
+        
         for link in $links; do
           aria2c --out=1.zip  $link
           unzip 1.zip
           rm 1.zip
         done
+        
         tree
+        
         for file in $files; do
           FOLDER_PATH=$(find . -mindepth 2 -maxdepth 2 -type d -name "$file" -print)
           echo "$FOLDER_PATH"
