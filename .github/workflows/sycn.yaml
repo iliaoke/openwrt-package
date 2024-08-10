@@ -16,17 +16,16 @@ jobs:
         git config --global user.name 'GitHub Actions'
         git config --global user.email 'actions@github.com'
         export files="luci-app-daed"
+        rm -rf luci-app-daed-master
         rm -rf $files
         git add -A
         git commit -m "delete"
         sudo apt update
-        sudo apt install aria2 unzip tar zstd
+        sudo apt install aria2 unzip
         aria2c --out=1.zip  https://github.com/QiuSimons/luci-app-daed/archive/refs/heads/master.zip
         unzip 1.zip
         mv ./luci-app-daed-master/luci-app-daed .
-        rm -rf luci-app-daed-master
-        rm 1.zip
-        git add -A
+        git add $files
         git commit -m "sycn"
         ls
 
