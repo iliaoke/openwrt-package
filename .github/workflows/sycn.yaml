@@ -33,7 +33,7 @@ jobs:
           echo "$package"
           mv $package-main $package || true
           mv $package-master $package || true
-          mv $package-dev/main $package || true
+          mv $package-dev-main $package || true
           echo 1234
           ls
         done
