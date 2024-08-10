@@ -17,7 +17,7 @@ jobs:
         git config --global user.email 'actions@github.com'
         export files="luci-app-daed daed luci-app-mihomo mihomo"
         export links="https://github.com/QiuSimons/luci-app-daed/archive/refs/heads/master.zip https://github.com/morytyann/OpenWrt-mihomo/archive/refs/heads/main.zip"
-        export single-links="https://github.com/muink/luci-app-homeproxy/archive/refs/heads/master.zip https://github.com/muink/homeproxy/archive/refs/heads/dev/main.zip"
+        export slinks="https://github.com/muink/luci-app-homeproxy/archive/refs/heads/master.zip https://github.com/muink/homeproxy/archive/refs/heads/dev/main.zip"
         
         rm -rf $files
         git add -A
@@ -25,11 +25,11 @@ jobs:
         sudo apt update
         sudo apt install aria2 unzip tree
         
-        for single-link in $single-links; do
-          aria2c --out=1.zip  $single-link
+        for slink in $slinks; do
+          aria2c --out=1.zip  $slink
           unzip 1.zip
           rm 1.zip
-          package=$(echo "$single-link" | sed -n '/^[^/]*/{s//\//;s/.*\///;p;q}')
+          package=$(echo "$slink" | sed -n '/^[^/]*/{s//\//;s/.*\///;p;q}')
           echo "$package"
           mv $package-main $package || true
           mv $package-master $package || true
