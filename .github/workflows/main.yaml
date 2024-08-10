@@ -1,0 +1,47 @@
+name: Build Packages
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: ${{ matrix.arch }}-${{ matrix.release }} build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        arch:
+          - aarch64_generic
+        release:
+          - SNAPSHOT
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+        with:
+          fetch-depth: 0
+          
+      - name: Build
+        uses: liaoke01/gh-action-sdk@main
+        env:
+          ARCH: ${{ matrix.arch }}-${{ matrix.release }}
+          FEEDNAME: 1
+          PACKAGES: luci-app-mihomo luci-app-homeproxy luci-app-daed
+          NO_REFRESH_CHECK: true
+          INDEX: 1
+
+
+      - name: push
+        run: |
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'actions@github.com'
+          mv bin/packages/${{ matrix.arch }}/1 .
+          git add 1
+          git commit -m "push"
+
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+         github_token: ${{ secrets.GITHUB_TOKEN }}  # 使用默认的GITHUB_TOKEN
+         分支: ${{ github.ref }}  # 推送到当前分支
