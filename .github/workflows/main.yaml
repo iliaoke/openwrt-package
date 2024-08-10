@@ -14,8 +14,8 @@ jobs:
 
       - name: Set up 
         run: |
-         #sudo apt-get -qq update
-         #sudo apt-get -qq install build-essential libncurses5-dev libncursesw5-dev zlib1g-dev gawk git gettext libssl-dev xsltproc rsync wget unzip qemu-utils mkisofs
+         sudo apt-get -qq update
+         sudo apt-get -qq install build-essential libncurses5-dev libncursesw5-dev zlib1g-dev gawk git gettext libssl-dev xsltproc rsync wget unzip qemu-utils mkisofs
          sudo bash -c 'bash <(curl -s https://build-scripts.immortalwrt.org/init_build_environment.sh)'
          sudo apt install tar zstd
          wget https://mirror-03.infra.openwrt.org/releases/23.05.4/targets/rockchip/armv8/openwrt-sdk-23.05.4-rockchip-armv8_gcc-12.3.0_musl.Linux-x86_64.tar.xz
