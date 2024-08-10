@@ -13,6 +13,8 @@ jobs:
 
     - name: Set up 
       run: |
+        git config --global user.name 'GitHub Actions'
+        git config --global user.email 'actions@github.com'
         rm -rf luci-app-daed luci-app-daed-master
         git add -A
         git commit -m "delete"
@@ -22,8 +24,6 @@ jobs:
         unzip 1.zip
         mv ./luci-app-daed-master/luci-app-daed .
         find . -mindepth 1 -maxdepth 1 ! -name '.git' ! -name '.github' ! -name 'luci-app-daed' ! -type d -exec rm -v {} +
-        git config --global user.name 'GitHub Actions'
-        git config --global user.email 'actions@github.com'
         git add -A
         git commit -m "sycn"
         ls
