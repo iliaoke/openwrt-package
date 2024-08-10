@@ -30,12 +30,10 @@ jobs:
           unzip 1.zip
           rm 1.zip
           package=$(echo $slink | cut -d'/' -f5)
-          echo "$package"
           mv $package-main $package || true
           mv $package-master $package || true
           mv $package-dev-main $package || true
-          echo 1234
-          ls
+          git add $package
         done
         
         for link in $links; do
@@ -44,11 +42,8 @@ jobs:
           rm 1.zip
         done
         
-        tree
-        
         for file in $files; do
           FOLDER_PATH=$(find . -mindepth 2 -maxdepth 2 -type d -name "$file" -print)
-          echo "$FOLDER_PATH"
           mv $FOLDER_PATH .
         done
 
