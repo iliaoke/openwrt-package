@@ -35,8 +35,6 @@ jobs:
           done
         done
           
-        #mv ./luci-app-daed-master/luci-app-daed .
-        #mv ./luci-app-daed-master/daed .
         git add $files
         git commit -m "sycn"
         ls
