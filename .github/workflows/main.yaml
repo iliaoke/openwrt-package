@@ -24,7 +24,11 @@ jobs:
          echo "src-git 1 https://github.com/liaoke01/openwrt-package.git;main" >> "feeds.conf.default"
          ./scripts/feeds update -a
          ./scripts/feeds install -a
-         make defconfig | true
+
+
+      - name: build
+        run: |
+         cd openwrt-sdk-23.05.4-rockchip-armv8_gcc-12.3.0_musl.Linux-x86_64
          make package/luci-app-mihomo/compile
          ls bin/packages/rockchip/armv8
 
