@@ -22,13 +22,13 @@ jobs:
         git add -A
         git commit -m "delete"
         sudo apt update
-        sudo apt install aria2 unzip
+        sudo apt install aria2 unzip tree
         for link in $links; do
           aria2c --out=1.zip  $link
           unzip 1.zip
           rm 1.zip
         done
-
+        tree
         for name in $names; do
           for file in $files; do
             mv ./$name/$file .
