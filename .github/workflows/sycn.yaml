@@ -13,7 +13,9 @@ jobs:
 
     - name: Set up 
       run: |
-        rm -rf luci-app-daed
+        rm -rf luci-app-daed luci-app-daed-master
+        git add -A
+        git commit -m "delete"
         sudo apt update
         sudo apt install aria2 unzip tar zstd
         aria2c --out=1.zip  https://github.com/QiuSimons/luci-app-daed/archive/refs/heads/master.zip
